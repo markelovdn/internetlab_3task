@@ -6,43 +6,38 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends Controller
 {
-    protected $userService;
-
-    public function __construct(UserService $userService)
+    public function index(): JsonResource
     {
-        $this->userService = $userService;
-    }
-
-    public function index()
-    {
-        $users = $this->userService->userRepository->getAll();
+        $users = app(UserService::class)->userRepository->getAll();
         return UserResource::collection($users);
     }
 
     public function store(CreateUserRequest $request): array
     {
-        $response = $this->userService->createUser($request->validated());
+        $response = app(UserService::class)->createUser($request->validated());
         return $response;
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResource
     {
-        $user = $this->userService->userRepository->getOne($id);
+        $user = app(UserService::class)->userRepository->getOne($id);
         return new UserResource($user);
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(UpdateUserRequest $request): JsonResponse
     {
-        $this->userService->updateUser($request->validated());
+        app(UserService::class)->updateUser($request->validated());
         return response()->json(['message' => __('apiResponseMessage.user.update')]);
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        $this->userService->userRepository->deleteUser($id);
+        app(UserService::class)->userRepository->deleteUser($id);
         return response()->json(['message' => __('apiResponseMessage.user.delete')]);
     }
 }
