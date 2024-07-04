@@ -13,11 +13,11 @@
     }
 -   **Response:** {
     "user": {
-    "id": 29,
-    "name": "test",
-    "email": "test3@test.ru"
+    "id": int,
+    "name": string,
+    "email": string
     },
-    "token": "36|X1SB1hKbbhXeu273HVKmhTpnyw2aUVmZ1SSWUtiqbe5bf073"
+    "token": string
     }
 
 ### Update User Information
